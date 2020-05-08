@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Data.Entity;
-using System.Web;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace IdentitySample.Models
 {
@@ -14,49 +14,93 @@ namespace IdentitySample.Models
     {
         protected override void Seed(ApplicationDbContext context)
         {
-            InitializeIdentityForEF(context);
-            base.Seed(context);
+            Task.Run(async () => { await InitializeIdentityForEF(context); }).Wait();
+            context.SaveChanges();
         }
 
         //Create User=Admin@Admin.com with password=Admin@123456 in the Admin role        
-        public static void InitializeIdentityForEF(ApplicationDbContext db)
+        public async Task InitializeIdentityForEF(ApplicationDbContext db)
         {
-            //var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            //var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
-            //const string name = "admin@example.com";
-            //const string password = "Admin@123456";
-            //const string roleName = "Admin";
 
-            ////Create Role Admin if it does not exist
-            //var role = roleManager.FindByName(roleName);
-            //if (role == null)
-            //{
-            //    role = new IdentityRole(roleName);
-            //    var roleresult = roleManager.Create(role);
-            //}
+            var userManager = new UserManager<User>(new UserStore<User>(db));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var passwordHasher = new Microsoft.AspNet.Identity.PasswordHasher();
 
-            //var user = userManager.FindByName(name);
-            //if (user == null)
-            //{
-            //    user = new User
-            //    {
-            //        UserName = name,
-            //        Email = name,
-            //        Avatar = "avatar-1.png",
-            //        Intro = "This me",
-            //        CreatedDate = DateTime.Now,
-            //        ModifiedDate = DateTime.Now
-            //    };
-            //    var result = userManager.Create(user, password);
-            //    result = userManager.SetLockoutEnabled(user.Id, false);
-            //}
+            if (!roleManager.Roles.Any())
+            {
+                await roleManager.CreateAsync(new IdentityRole { Name = "Administrators" });
+                await roleManager.CreateAsync(new IdentityRole { Name = "Manager" });
+                await roleManager.CreateAsync(new IdentityRole { Name = "Seller" });
+            }
 
-            //// Add user admin to Role Admin if not already added
-            //var rolesForUser = userManager.GetRoles(user.Id);
-            //if (!rolesForUser.Contains(role.Name))
-            //{
-            //    var result = userManager.AddToRole(user.Id, role.Name);
-            //}
+            if (!userManager.Users.Any(u => u.UserName == "admin@domain.com"))
+            {
+                var user = new User
+                {
+                    Avatar = "avatar-4.png",
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                    Email = "admin@domain.com",
+                    UserName = "admin@domain.com",
+                    PasswordHash = passwordHasher.HashPassword("Abc@1234"),
+                    EmailConfirmed = true,
+                    PhoneNumber = "0944551356",
+                    PhoneNumberConfirmed = true,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0,
+                    TwoFactorEnabled = false,
+                    SecurityStamp = Guid.NewGuid().ToString("D")
+                };
+
+                await userManager.CreateAsync(user, "Abc@1234");
+                await userManager.AddToRoleAsync(user.Id, "Administrators");
+                await userManager.AddToRoleAsync(user.Id, "Manager");
+                await userManager.AddToRoleAsync(user.Id, "Seller");
+            }
+
+            if (!userManager.Users.Any(u => u.UserName == "cong@domain.com"))
+            {
+                var user = new User
+                {
+                    Avatar = "avatar-1.png",
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                    Email = "cong@domain.com",
+                    UserName = "cong@domain.com",
+                    EmailConfirmed = true,
+                    PhoneNumber = "0944551356",
+                    PhoneNumberConfirmed = true,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0,
+                    TwoFactorEnabled = false,
+                    SecurityStamp = Guid.NewGuid().ToString("D")
+                };
+
+                await userManager.CreateAsync(user, "Abc@1234");
+                await userManager.AddToRoleAsync(user.Id, "Administrators");
+            }
+
+            if (!userManager.Users.Any(u => u.UserName == "van@domain.com"))
+            {
+                var user = new User
+                {
+                    Avatar = "avatar-2.png",
+                    Email = "van@domain.com",
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                    UserName = "van@domain.com",
+                    EmailConfirmed = true,
+                    PhoneNumber = "0944551356",
+                    PhoneNumberConfirmed = true,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0,
+                    TwoFactorEnabled = false,
+                    SecurityStamp = Guid.NewGuid().ToString("D")
+                };
+
+                await userManager.CreateAsync(user, "Abc@1234");
+                await userManager.AddToRoleAsync(user.Id, "Manager");
+            }
         }
     }
 }
