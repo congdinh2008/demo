@@ -1,4 +1,6 @@
-﻿using IdentitySample.Models;
+﻿using DemoIdentityDefault.Core.Models;
+using DemoIdentityDefault.UI;
+using DemoIdentityDefault.UI.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace IdentitySample.Controllers
+namespace DemoIdentityDefault.Controllers
 {
     [Authorize]
     public class AccountController : Controller

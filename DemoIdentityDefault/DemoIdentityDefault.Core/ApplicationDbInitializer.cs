@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using DemoIdentityDefault.Core.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentitySample.Models
+namespace DemoIdentityDefault.UI
 {
     // This is useful if you do not want to tear down the database each time you run the application.
     // public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>

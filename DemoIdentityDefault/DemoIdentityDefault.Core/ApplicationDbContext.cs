@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DemoIdentityDefault.Core.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
-namespace IdentitySample.Models
+namespace DemoIdentityDefault.UI
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
