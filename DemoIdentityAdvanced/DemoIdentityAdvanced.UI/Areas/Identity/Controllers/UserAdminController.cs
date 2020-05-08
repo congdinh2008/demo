@@ -1,3 +1,4 @@
+using DemoIdentityAdvanced.Core.Models;
 using DemoIdentityAdvanced.UI.Areas.Identity.ViewModels;
 using DemoIdentityAdvanced.UI.Models;
 using DemoIdentityAdvanced.UI.ViewModels;
@@ -92,7 +93,7 @@ namespace DemoIdentityAdvanced.UI.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email };
+                var user = new User { UserName = userViewModel.Email, Email = userViewModel.Email };
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 //Add User to the selected Roles 

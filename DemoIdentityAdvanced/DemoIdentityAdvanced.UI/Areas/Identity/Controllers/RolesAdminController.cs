@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using DemoIdentityAdvanced.Core.Models;
 
 namespace DemoIdentityAdvanced.UI.Areas.Identity.Controllers
 {
@@ -71,7 +72,7 @@ namespace DemoIdentityAdvanced.UI.Areas.Identity.Controllers
             }
             var role = await RoleManager.FindByIdAsync(id);
             // Get the list of Users in this Role
-            var users = new List<ApplicationUser>();
+            var users = new List<User>();
 
             // Get the list of Users in this Role
             foreach (var user in UserManager.Users.ToList())

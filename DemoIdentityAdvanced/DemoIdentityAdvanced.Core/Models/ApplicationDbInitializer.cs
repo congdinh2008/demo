@@ -1,3 +1,4 @@
+using DemoIdentityAdvanced.Core.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -20,7 +21,7 @@ namespace DemoIdentityAdvanced.UI.Models
         //Create User=Admin@Admin.com with password=Admin@123456 in the Admin role        
         public static void InitializeIdentity(ApplicationDbContext db)
         {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var userManager = new UserManager<User>(new UserStore<User>(db));
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
             const string name = "admin@example.com";
             const string password = "Admin@123456";
@@ -37,7 +38,7 @@ namespace DemoIdentityAdvanced.UI.Models
             var user = userManager.FindByName(name);
             if (user == null)
             {
-                user = new ApplicationUser { UserName = name, Email = name };
+                user = new User { UserName = name, Email = name };
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
             }

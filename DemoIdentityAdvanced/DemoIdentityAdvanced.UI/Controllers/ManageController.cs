@@ -1,3 +1,4 @@
+using DemoIdentityAdvanced.Core.Models;
 using DemoIdentityAdvanced.UI.Models;
 using DemoIdentityAdvanced.UI.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -365,7 +366,7 @@ namespace DemoIdentityAdvanced.UI.Controllers
             }
         }
 
-        private async Task SignInAsync(ApplicationUser user, bool isPersistent)
+        private async Task SignInAsync(User user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.TwoFactorCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, await user.GenerateUserIdentityAsync(UserManager));

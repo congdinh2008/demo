@@ -1,3 +1,4 @@
+using DemoIdentityAdvanced.Core.Models;
 using DemoIdentityAdvanced.UI.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -12,9 +13,9 @@ namespace DemoIdentityAdvanced.UI
 {
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
 
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class ApplicationUserManager : UserManager<User>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
+        public ApplicationUserManager(IUserStore<User> store)
             : base(store)
         {
         }
@@ -22,9 +23,9 @@ namespace DemoIdentityAdvanced.UI
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options,
             IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<User>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            manager.UserValidator = new UserValidator<User>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -44,11 +45,11 @@ namespace DemoIdentityAdvanced.UI
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug in here.
-            manager.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<User>
             {
                 MessageFormat = "Your security code is: {0}"
             });
-            manager.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<User>
             {
                 Subject = "SecurityCode",
                 BodyFormat = "Your security code is {0}"
@@ -59,7 +60,7 @@ namespace DemoIdentityAdvanced.UI
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                    new DataProtectorTokenProvider<User>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
         }
@@ -97,12 +98,12 @@ namespace DemoIdentityAdvanced.UI
         }
     }
 
-    public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
+    public class ApplicationSignInManager : SignInManager<User, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager) : 
             base(userManager, authenticationManager) { }
 
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
+        public override Task<ClaimsIdentity> CreateUserIdentityAsync(User user)
         {
             return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
         }
