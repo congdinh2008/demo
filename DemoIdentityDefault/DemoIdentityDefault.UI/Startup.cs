@@ -1,8 +1,6 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿using Owin;
 
-[assembly: OwinStartupAttribute(typeof(DemoIdentityDefault.UI.Startup))]
-namespace DemoIdentityDefault.UI
+namespace IdentitySample
 {
     public partial class Startup
     {
