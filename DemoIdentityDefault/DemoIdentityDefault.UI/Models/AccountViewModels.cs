@@ -64,6 +64,10 @@ namespace IdentitySample.Models
 
     public class RegisterViewModel
     {
+        [Required(ErrorMessage = "The {0} must be required!")]
+        [StringLength(255, ErrorMessage = "The {0} must be at least 5 characters", MinimumLength = 5)]
+        public string Avatar { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

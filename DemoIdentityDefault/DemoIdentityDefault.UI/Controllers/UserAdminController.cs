@@ -1,5 +1,6 @@
 ﻿using IdentitySample.Models;
 using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -90,7 +91,14 @@ namespace IdentitySample.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email };
+                var user = new User
+                {
+                    Avatar = userViewModel.Avatar,
+                    UserName = userViewModel.Email,
+                    Email = userViewModel.Email,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now
+                };
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 //Add User to the selected Roles 
@@ -141,6 +149,7 @@ namespace IdentitySample.Controllers
             {
                 Id = user.Id,
                 Email = user.Email,
+                Avatar = user.Avatar,
                 RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
                 {
                     Selected = userRoles.Contains(x.Name),
@@ -166,6 +175,7 @@ namespace IdentitySample.Controllers
 
                 user.UserName = editUser.Email;
                 user.Email = editUser.Email;
+                user.Avatar = editUser.Avatar;
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 
