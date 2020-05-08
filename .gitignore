@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs
+/DemoIdentityDefault/.vs/DemoIdentityDefault
+/DemoIdentityDefault/DemoIdentityDefault.UI/bin
+/DemoIdentityDefault/packages
+/DemoIdentityDefault/DemoIdentityDefault.UI/obj/Debug
