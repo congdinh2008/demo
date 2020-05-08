@@ -12,3 +12,6 @@
 /DemoIdentityAdvanced/.vs/DemoIdentityAdvanced
 /DemoIdentityAdvanced/DemoIdentityAdvanced.UI/bin
 /DemoIdentityAdvanced/packages
+/DemoIdentityAdvanced/DemoIdentityAdvanced.Core/obj/Debug
+/DemoIdentityAdvanced/DemoIdentityAdvanced.Core/Properties/AssemblyInfo.cs
+/DemoIdentityAdvanced/DemoIdentityAdvanced.Core/bin/Debug
