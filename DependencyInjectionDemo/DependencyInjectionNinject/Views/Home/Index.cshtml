@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Book>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h1>List Books</h1>
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@item.Title</li>
+    }
+</ul>
+
